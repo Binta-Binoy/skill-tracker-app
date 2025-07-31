@@ -8,15 +8,22 @@ const Signup = () => {
   var [name, setName] = useState('');
   var [email, setEmail] = useState('');
   var [password, setPassword] = useState('');
+  var [passwordConf, setPasswordConf] = useState('');
   var [errorMessage, setErrorMessage] = useState('');
   var navigate = useNavigate();
   function SignupUser(event){
-    event.preventDefault();  
+    event.preventDefault();
+    
+    if (password !== passwordConf) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
 
     var user = {
       name: name,
       email: email,
       password: password,
+      password_confirmation: passwordConf
     };
 
     axios.post('http://127.0.0.1:8000/signup/', user)
@@ -36,10 +43,10 @@ const Signup = () => {
   return (
     <div className="row g-0 vh-100">
       <div className="col-md-6 d-none d-md-block bg-primary text-white d-flex align-items-center justify-content-center">
-        <div className="text-center px-4">
+        {/* <div className="text-center px-4">
           <h1 className="display-5 fw-bold">Level Up Your Skills</h1>
           <p className="lead mt-3">Track, learn, and grow faster.</p>
-        </div>
+        </div> */}
       </div>
       <div className="col-md-6 d-flex align-items-center justify-content-center bg-white">
         <div className="p-4" style={{ width: '100%', maxWidth: '400px' }}>
@@ -57,6 +64,10 @@ const Signup = () => {
             <div className="mb-4">
               <label className="form-label">Password</label>
               <input type="password" className="form-control" value={password} onInput={(event)=>setPassword(event.target.value)} />
+            </div>
+            <div className="mb-4">
+              <label className="form-label">Confirm Password</label>
+              <input type="password" className="form-control" value={passwordConf} onInput={(event)=>setPasswordConf(event.target.value)} />
             </div>
             <button type="submit" className="btn btn-primary w-100" onClick={SignupUser}>Signup</button>
             <p className="text-center mt-3">

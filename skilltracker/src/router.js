@@ -1,24 +1,22 @@
 
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from './pages/Dashboard';
-import AddSkill from './pages/AddSkill';
+import AddCourse from './pages/AddCourse';
 import EditSkill from './pages/EditSkill';
 import SkillDetails from './pages/SkillDetails';
-import Summary from './pages/Summary';
 import CalendarView from './pages/CalendarView'
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import SkillList from './pages/SkillList'
+import Courselist from './pages/Courselist'
 
 const router = createBrowserRouter([
     { path: '/', element: <Signup/> },
     { path: 'login/', element: <Login/> },
     { path: 'dashboard/', element: <Dashboard/> },
-    { path: 'skilllist/', element: <SkillList/> },
-    { path: 'add/', element: <AddSkill/> },
-    { path: 'edit/', element: <EditSkill/> },
-    { path: 'skilldetails/', element: <SkillDetails/> },
-    { path: 'summary/', element: <Summary/> },
+    { path: '/courselist/:id', element: <Courselist/> },
+    { path: 'courselist/:id/add', element: <AddCourse /> },
+    { path: 'edit/:id', element: <EditSkill/> },
+    { path: 'skilldetails/:id', element: <SkillDetails/> },
     { path: 'calendarview/', element: <CalendarView/> }
 
 ]);

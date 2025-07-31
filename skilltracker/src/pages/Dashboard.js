@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState({ name: '', description: '' });
+  const [totalHours, setTotalHours] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [totalCourses, setTotalCourses] = useState(0);
+
+
+  const navigate = useNavigate();
 
   // Open and close modal
   const handleOpen = () => setShowModal(true);
@@ -14,6 +24,11 @@ const Dashboard = () => {
     setShowModal(false);
     setNewSkill({ name: '', description: '' });
   };
+
+  const handleViewSkill = (skillId) => {
+  navigate(`/courselist/${skillId}`);
+};
+
 
   // Add new skill
   const handleAddSkill = (e) => {
@@ -63,17 +78,88 @@ const Dashboard = () => {
       });
   };
 
+  //Fetch total hours from backend
+
+  const fetchTotalHours = () => {
+  const token = localStorage.getItem('token');
+  axios
+    .get('http://127.0.0.1:8000/total-hours/', {
+      headers: {
+        Authorization: 'Token ' + token,
+      },
+    })
+    .then((response) => {
+      setTotalHours(response.data.total_hours);
+    })
+    .catch((error) => {
+      console.error('Error fetching total hours:', error);
+    });
+};
+
+//total courses in dashboard
+useEffect(() => {
+    const token = localStorage.getItem('token');
+    axios.get('http://127.0.0.1:8000/total-courses/', {
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    }).then(res => {
+      setTotalCourses(res.data.total_courses);
+    }).catch(err => {
+      console.error("Failed to fetch total courses:", err);
+    });
+  }, []);
+
+// total completed course in dashboard
+
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  axios.get('http://127.0.0.1:8000/completed-resources/', {
+    headers: {
+      Authorization: `Token ${token}`
+    }
+  })
+  .then(res => {
+    setCompletedCount(res.data.completed);
+  })
+  .catch(err => {
+    console.error("Error fetching completed count:", err);
+  });
+}, []);
+
+
+// Learning categories in dashboard
+
+const fetchLearningCategories = () => {
+  const token = localStorage.getItem('token');
+  axios
+    .get('http://127.0.0.1:8000/learning-categories/', {
+      headers: { Authorization: 'Token ' + token },
+    })
+    .then((response) => {
+      setCategories(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching learning categories:', error);
+    });
+};
+
   // Load skills on mount
   useEffect(() => {
     fetchSkills();
+    fetchTotalHours();
+    
+    fetchLearningCategories();
   }, []);
 
   return (
     <div className="dashboard-container text-white">
+      <Navbar />
+
       <div className="container py-5">
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-5">
-          <h2 className="fw-bold">🚀 Skill Tracker</h2>
+          <h2 className="fw-bold">🚀 Skill Stack</h2>
           <button className="btn btn-glass text-white fw-semibold" onClick={handleOpen}>
             + Add New Skill
           </button>
@@ -83,20 +169,20 @@ const Dashboard = () => {
         <div className="row g-4 mb-5">
           <div className="col-md-4">
             <div className="glass-card p-4">
-              <h6 className="text-muted">Total Skills</h6>
-              <h3 className="fw-bold">{skills.length}</h3>
+              <h6 className="text-muted">Total Courses</h6>
+              <h3 className="fw-bold">{totalCourses}</h3>
             </div>
           </div>
           <div className="col-md-4">
             <div className="glass-card p-4">
               <h6 className="text-muted">Hours Spent</h6>
-              <h3 className="fw-bold">36 hrs</h3>
+              <h3 className="fw-bold">{totalHours} hrs</h3>
             </div>
           </div>
           <div className="col-md-4">
             <div className="glass-card p-4">
               <h6 className="text-muted">Completed</h6>
-              <h3 className="fw-bold">7</h3>
+              <h3 className="fw-bold">{completedCount}</h3>
             </div>
           </div>
         </div>
@@ -105,54 +191,55 @@ const Dashboard = () => {
         {skills.length > 0 && (
           <>
             <h4 className="mb-3">🧠 Your Skills</h4>
-            <div className="row g-4 mb-5">
-              {skills.map((skill, index) => (
-                <div key={index} className="col-md-4 mb-4">
-                  <div className="glass-card p-3">
-                    <h5 className="fw-bold mb-2">{skill.name}</h5>
-                    <p className="text-light small">{skill.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+<div className="row g-4 mb-5">
+  {skills.map((skill, index) => (
+    <div key={index} className="col-md-4 mb-4">
+      <div className="glass-card p-3 d-flex flex-column justify-content-between h-100">
+        <div>
+          <h5 className="fw-bold mb-2">{skill.name}</h5>
+          <p className="text-light small">{skill.description}</p>
+        </div>
+        <div className="text-end">
+          <button
+            className="btn btn-outline-info btn-sm mt-3"
+            onClick={() => handleViewSkill(skill.id)}
+          >
+            View
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
           </>
         )}
 
         {/* Learning Categories */}
         <h4 className="mb-3">🎓 Learning Categories</h4>
         <div className="row g-3 mb-5">
-          <div className="col-sm-4">
-            <div className="category-glass">
-              <span className="badge bg-primary">Course</span>
-              <p className="mb-1 mt-2 small text-light">Udemy, Coursera</p>
-              <strong>5 Skills</strong>
+          {categories.map((category, index) => (
+            <div className="col-sm-4" key={index}>
+              <div className="category-glass">
+                <span className={`badge ${
+                  category.resource_type === 'Course' ? 'bg-primary' :
+                  category.resource_type === 'Video' ? 'bg-warning' :
+                  category.resource_type === 'Article' ? 'bg-success' :
+                  'bg-secondary'
+                }`}>
+                  {category.resource_type}
+                </span>
+                <p className="mb-1 mt-2 small text-light">
+                  {category.resource_type === 'Course' && 'Udemy, Coursera'}
+                  {category.resource_type === 'Video' && 'YouTube'}
+                  {category.resource_type === 'Article' && 'Blogs, Medium'}
+                </p>
+                <strong>{category.count} Resources</strong>
+              </div>
             </div>
-          </div>
-          <div className="col-sm-4">
-            <div className="category-glass">
-              <span className="badge bg-warning">Video</span>
-              <p className="mb-1 mt-2 small text-light">YouTube</p>
-              <strong>4 Skills</strong>
-            </div>
-          </div>
-          <div className="col-sm-4">
-            <div className="category-glass">
-              <span className="badge bg-success">Article</span>
-              <p className="mb-1 mt-2 small text-light">Blogs, Medium</p>
-              <strong>3 Skills</strong>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Recent Activity */}
-        <h4 className="mb-3">🕓 Recent Activity</h4>
-        <div className="glass-card p-4">
-          <ul className="list-unstyled mb-0">
-            <li>✅ Completed “Intro to Git & GitHub”</li>
-            <li>📖 Started “React Advanced Patterns”</li>
-            <li>📝 Added notes to “Python Basics”</li>
-          </ul>
-        </div>
       </div>
 
       {/* Modal for Adding Skill */}

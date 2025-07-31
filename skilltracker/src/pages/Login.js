@@ -34,10 +34,10 @@ const Login = () => {
   return (
     <div className="row g-0 vh-100">
       <div className="col-md-6 d-none d-md-block bg-primary text-white d-flex align-items-center justify-content-center">
-        <div className="text-center px-4">
+        {/* <div className="text-center px-4">
           <h1 className="display-5 fw-bold">Level Up Your Skills</h1>
           <p className="lead mt-3">Track, learn, and grow faster.</p>
-        </div>
+        </div> */}
       </div>
       <div className="col-md-6 d-flex align-items-center justify-content-center bg-white">
         <div className="p-4" style={{ width: '100%', maxWidth: '400px' }}>

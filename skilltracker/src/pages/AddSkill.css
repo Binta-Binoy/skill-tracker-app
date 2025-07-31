@@ -1,0 +1,100 @@
+.add-skill-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2f, #121219);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.form-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  padding: 3rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.15);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+  color: #00eaff;
+  font-weight: bold;
+}
+
+.section-title {
+  color: #00eaff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+}
+
+input,
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.submit-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.submit-btn-container button {
+  background: #00eaff;
+  color: #000;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.3);
+}
+
+.submit-btn-container button:hover {
+  background: #00b7c9;
+  color: #fff;
+}

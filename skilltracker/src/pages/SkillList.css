@@ -1,0 +1,83 @@
+.skill-details-container {
+  padding: 3rem 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2f, #121219);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.skill-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #00ffe1, #33d0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.skill-subtitle {
+  color: #aaa;
+  font-size: 1rem;
+  max-width: 600px;
+  margin-top: 0.5rem;
+}
+
+.add-btn {
+  background: #00eaff;
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.3);
+  margin-top: 1rem;
+}
+
+.add-btn:hover {
+  background: #00c0d1;
+  color: #fff;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.topic-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  padding: 1.5rem;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.topic-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.card-content h4 {
+  font-size: 1.25rem;
+  color: #00eaff;
+  margin-bottom: 0.5rem;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #dcdcdc;
+  line-height: 1.4;
+}

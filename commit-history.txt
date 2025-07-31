@@ -1,0 +1,11 @@
+commit 28ece8b7677cadd80715fd4b9936ea892763bb8c
+Author: Binta-Binoy <minnubbinoy@gmail.com>
+Date:   Thu Jul 31 22:56:48 2025 +0530
+
+    Updated skill tracker: added course pages, modified dashboard, removed unused components
+
+commit 5be8c125ffc406682d0d2d39f449f0dc5f9c7447
+Author: Binta-Binoy <minnubbinoy@gmail.com>
+Date:   Thu Jul 31 14:00:08 2025 +0530
+
+    Initial commit: added skill tracker frontend and backend

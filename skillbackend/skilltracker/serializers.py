@@ -11,3 +11,4 @@ class LearningResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LearningResource
         fields = '__all__'
+        read_only_fields = ['skill']

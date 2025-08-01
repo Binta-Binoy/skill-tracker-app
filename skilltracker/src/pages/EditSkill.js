@@ -89,9 +89,10 @@ import './AddCourse.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const EditSkill = () => {
-  const { id } = useParams(); // This is the resource ID
+ const EditSkill = () => {
+  const { id, skill_id } = useParams(); // This is the resource ID
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
   const [formData, setFormData] = useState({
     title: '',
     platform: '',
@@ -105,17 +106,22 @@ const EditSkill = () => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get(`http://127.0.0.1:8000/learning-resource/${id}/`, {
-      headers: { Authorization: `Token ${token}` },
-    })
-      .then(res => {
-        setFormData(res.data);
-      })
-      .catch(err => {
-        console.error("Failed to load resource data", err);
-      });
-  }, [id]);
+  axios.get(`http://127.0.0.1:8000/resource-details/${id}/`, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  })
+  .then((res) => {
+    const data = res.data;
+    setFormData({
+      ...data,
+      skill: data.skill || skill_id  // ✅ force skill ID into the form data
+    });
+  })
+  .catch((err) => {
+    console.error("Error fetching resource:", err);
+  });
+}, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,20 +132,21 @@ const EditSkill = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
-    axios.put(`http://127.0.0.1:8000/update-learning-resource/${id}/`, formData, {
-      headers: { Authorization: `Token ${token}` }
-    })
-      .then(res => {
-        alert("Skill updated successfully!");
-        navigate('/dashboard'); // or wherever you want to go
-      })
-      .catch(err => {
-        console.error("Failed to update skill", err);
-        alert("Update failed. See console for details.");
-      });
-  };
+  e.preventDefault();
+  console.log("Submitting form data:", formData);  // ✅ Add this line
+
+  axios.put(`http://127.0.0.1:8000/update-learning-resource/${id}/`, formData, {
+    headers: { Authorization: `Token ${token}` }
+  })
+  .then(res => {
+    alert("Skill updated successfully!");
+    navigate('/dashboard');
+  })
+  .catch(err => {
+    console.error("Failed to update skill", err.response?.data || err);
+    alert("Update failed. See console for details.");
+  });
+};
 
   return (
     <div className="add-skill-container">
@@ -159,10 +166,10 @@ const EditSkill = () => {
                 <label>Platform</label>
                 <select name="platform" value={formData.platform} onChange={handleChange}>
                   <option value="" style={{ color: 'black' }}>Choose...</option>
-                  <option value="Udemy" style={{ color: 'black' }}>Udemy</option>
-                  <option value="Coursera" style={{ color: 'black' }}>Coursera</option>
-                  <option value="YouTube" style={{ color: 'black' }}>YouTube</option>
-                  <option value="Other" style={{ color: 'black' }}>Other</option>
+                  <option value="udemy" style={{ color: 'black' }}>Udemy</option>
+                  <option value="coursera" style={{ color: 'black' }}>Coursera</option>
+                  <option value="youTube" style={{ color: 'black' }}>YouTube</option>
+                  <option value="other" style={{ color: 'black' }}>Other</option>
                 </select>
               </div>
               <div className="form-group">
@@ -187,9 +194,9 @@ const EditSkill = () => {
               <div className="form-group">
                 <label>Status</label>
                 <select name="status" value={formData.status} onChange={handleChange}>
-                  <option value="Not Started" style={{ color: 'black' }}>Not Started</option>
-                  <option value="In Progress" style={{ color: 'black' }}>In Progress</option>
-                  <option value="Completed" style={{ color: 'black' }}>Completed</option>
+                  <option value="not_started" style={{ color: 'black' }}>Not Started</option>
+                  <option value="in_progress" style={{ color: 'black' }}>In Progress</option>
+                  <option value="completed" style={{ color: 'black' }}>Completed</option>
                 </select>
               </div>
               <div className="form-group">

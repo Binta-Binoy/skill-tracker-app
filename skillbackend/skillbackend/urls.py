@@ -10,7 +10,6 @@ urlpatterns = [
     path('listskills/', views.list_skills),
     path('get-titles-and-notes/<int:skill_id>/', views.get_titles_and_notes),
     path('addskill/', views.create_skill_with_resource),
-    # path('resource-details/<int:resource_id>/', views.resource_detail_view),
     path('resource-details/<int:resource_id>/', views.get_resource_details),
     path('update-learning-resource/<int:resource_id>/', views.update_learning_resource),
     path('total-hours/', views.get_total_hours),

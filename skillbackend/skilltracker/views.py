@@ -161,7 +161,7 @@ def get_titles_and_notes(request, skill_id):
 @permission_classes([IsAuthenticated])
 def update_learning_resource(request, resource_id):
     user = request.user
-
+    
     try:
         resource = LearningResource.objects.get(id=resource_id, skill__user=user)
     except LearningResource.DoesNotExist:
